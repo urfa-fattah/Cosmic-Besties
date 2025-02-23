@@ -11,16 +11,75 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Galactic Loader */
+        #galactic-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a23;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .galactic-spiral {
+            position: relative;
+            width: 20vw;
+            height: 20vw;
+            max-width: 200px;
+            max-height: 200px;
+        }
+
+        .galactic-star {
+            position: absolute;
+            width: 1vw;
+            height: 1vw;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 2vw #fff, 0 0 4vw #ff8c94;
+            animation: spinStar 4s linear infinite;
+        }
+
+        .galactic-nebula {
+            position: absolute;
+            width: 30vw;
+            height: 30vw;
+            max-width: 300px;
+            max-height: 300px;
+            background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, transparent 70%);
+            filter: blur(5vw);
+            animation: fadeNebula 2s ease-in-out infinite;
+        }
+
+        @keyframes spinStar {
+            0% { transform: rotate(0deg) translateX(8vw) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(8vw) rotate(-360deg); }
+        }
+
+        @keyframes fadeNebula {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
             background: #0a0a23;
-            color: #fff;
+            color: #e0e0e0;
             overflow-x: hidden;
             margin: 0;
             position: relative;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        /* Cosmic Background */
+        body.loaded {
+            opacity: 1;
+        }
+
         .cosmic-background {
             position: fixed;
             top: 0;
@@ -33,31 +92,30 @@
 
         .nebula {
             position: absolute;
-            width: 400px;
-            height: 400px;
+            width: 40vw;
+            height: 40vw;
             background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, rgba(147, 112, 219, 0.2) 50%, transparent 80%);
-            filter: blur(50px);
+            filter: blur(5vw);
             animation: drift 30s infinite linear;
-            transition: transform 0.1s ease;
         }
 
         .pulsar {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 1vw;
+            height: 1vw;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 20px #fff, 0 0 40px #00ffff;
+            box-shadow: 0 0 2vw #fff, 0 0 4vw #00ffff;
             animation: pulsePulsar 1.5s infinite;
         }
 
         .constellation {
             position: absolute;
-            width: 2px;
-            height: 2px;
+            width: 0.2vw;
+            height: 0.2vw;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 5px #fff;
+            box-shadow: 0 0 0.5vw #fff;
         }
 
         .constellation-line {
@@ -68,15 +126,15 @@
 
         .shooting-star {
             position: absolute;
-            width: 2px;
-            height: 50px;
+            width: 0.2vw;
+            height: 5vw;
             background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
             animation: shoot 2s linear infinite;
         }
 
         @keyframes drift {
             0% { transform: translate(0, 0); }
-            50% { transform: translate(100px, 50px); }
+            50% { transform: translate(10vw, 5vw); }
             100% { transform: translate(0, 0); }
         }
 
@@ -92,25 +150,25 @@
 
         .navbar {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(2vw);
+            box-shadow: 0 0.4vw 3vw rgba(0, 0, 0, 0.3);
+            border-bottom: 0.1vw solid rgba(255, 255, 255, 0.1);
         }
 
         .navbar-brand, .nav-link {
-            color: #fff !important;
+            color: #f0f4f8 !important;
             font-family: 'Orbitron', sans-serif;
-            text-shadow: 0 0 5px #fff;
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
             transition: color 0.3s ease;
         }
 
         .nav-link:hover {
-            color: #ff6b6b !important;
+            color: #ff8c94 !important;
         }
 
         .hero-section {
-            padding: 150px 0;
-            background: linear-gradient(45deg, #ff6b6b 0%, #4ecdc4 50%, #45b7d1 100%);
+            padding: 15vh 0;
+            background: linear-gradient(45deg, #ff8c94 0%, #4ecdc4 50%, #45b7d1 100%);
             position: relative;
             overflow: hidden;
             text-align: center;
@@ -132,10 +190,12 @@
         }
 
         .typing-text {
-            border-right: 2px solid #fff;
+            border-right: 0.2vw solid #f0f4f8;
             white-space: nowrap;
             overflow: hidden;
             animation: typing 3s steps(20) infinite, blink 0.75s step-end infinite;
+            color: #f0f4f8;
+            font-size: clamp(2rem, 5vw, 3.5rem);
         }
 
         @keyframes typing {
@@ -150,46 +210,28 @@
 
         .friend-card {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(200, 200, 255, 0.2) 100%);
-            border-radius: 25px;
-            padding: 20px;
-            margin: 20px 0;
+            border-radius: 2.5vw;
+            padding: 2vw;
+            margin: 2vw 0;
             transition: all 0.4s ease;
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 0.1vw solid rgba(255, 255, 255, 0.3);
             position: relative;
         }
 
         .friend-card:hover {
-            transform: scale(1.05) translateY(-10px);
+            transform: scale(1.05) translateY(-1vw);
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
-        }
-
-        .friend-card::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            border-radius: 25px;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.5) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .friend-card:hover::after {
-            opacity: 1;
+            box-shadow: 0 1vw 3vw rgba(255, 255, 255, 0.3);
         }
 
         .friend-photo {
-            width: 130px;
-            height: 130px;
+            width: clamp(10vw, 130px, 15vw);
+            height: clamp(10vw, 130px, 15vw);
             border-radius: 50%;
-            margin-bottom: 15px;
-            border: 5px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            margin-bottom: 1.5vw;
+            border: 0.5vw solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 2vw rgba(255, 255, 255, 0.4);
             object-fit: cover;
             transition: transform 0.3s ease;
         }
@@ -214,29 +256,29 @@
         }
 
         .sun {
-            width: 250px;
-            height: 250px;
+            width: clamp(15vw, 250px, 25vw);
+            height: clamp(15vw, 250px, 25vw);
             border-radius: 50%;
             position: absolute;
-            box-shadow: 0 0 80px #ffd700, 0 0 150px #ff4500, 0 0 200px #ffeb3b;
+            box-shadow: 0 0 8vw #ffd700, 0 0 15vw #ff4500, 0 0 20vw #ffeb3b;
             animation: pulse 2s infinite ease-in-out;
             object-fit: cover;
             z-index: 10;
         }
 
         .planet {
-            width: 100px;
-            height: 100px;
+            width: clamp(8vw, 100px, 12vw);
+            height: clamp(8vw, 100px, 12vw);
             border-radius: 50%;
             position: absolute;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 3vw rgba(255, 255, 255, 0.7);
             background-size: cover;
             z-index: 5;
         }
 
         .orbit {
             position: absolute;
-            border: 2px dashed rgba(255, 255, 255, 0.5);
+            border: 0.2vw dashed rgba(255, 255, 255, 0.5);
             border-radius: 50%;
             animation: orbitGlow 4s infinite alternate;
         }
@@ -244,11 +286,11 @@
         .planet-tooltip {
             position: absolute;
             background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            top: -45px;
+            color: #f0f4f8;
+            padding: 0.5vw 1vw;
+            border-radius: 0.5vw;
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            top: -4.5vw;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
@@ -271,44 +313,67 @@
             100% { border-color: rgba(255, 255, 255, 0.9); }
         }
 
-        .glow-text {
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff6b6b, 0 0 30px #4ecdc4;
+        /* Responsive Orbit Animations */
+        @keyframes orbit1 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-15vw) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-15vw) rotate(-360deg); }
         }
 
-        /* Cosmic Adventures */
+        @keyframes orbit2 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-22vw) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-22vw) rotate(-360deg); }
+        }
+
+        @keyframes orbit3 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-29vw) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-29vw) rotate(-360deg); }
+        }
+
+        @keyframes orbit4 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-36vw) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-36vw) rotate(-360deg); }
+        }
+
+        @keyframes orbit5 {
+            0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-43vw) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-43vw) rotate(-360deg); }
+        }
+
         .timeline::before {
             content: '';
             position: absolute;
-            width: 2px;
+            width: 0.2vw;
             height: 100%;
-            background: linear-gradient(to bottom, #ff6b6b, #4ecdc4);
+            background: linear-gradient(to bottom, #ff8c94, #4ecdc4);
             left: 50%;
             transform: translateX(-50%);
         }
 
         .timeline-item {
             position: relative;
-            margin: 50px 0;
+            margin: 5vw 0;
             width: 50%;
         }
 
         .timeline-item:nth-child(odd) {
             left: 0;
             text-align: right;
-            padding-right: 40px;
+            padding-right: 4vw;
         }
 
         .timeline-item:nth-child(even) {
             left: 50%;
-            padding-left: 40px;
+            padding-left: 4vw;
         }
 
         .timeline-content {
             background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            padding: 2vw;
+            border-radius: 1.5vw;
+            box-shadow: 0 0 2vw rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease;
+            color: #e0e0e0;
+            font-size: clamp(0.9rem, 2vw, 1.2rem);
         }
 
         .timeline-item:hover .timeline-content {
@@ -318,58 +383,57 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 2vw;
+            height: 2vw;
             background: #fff;
             border-radius: 50%;
             top: 50%;
             transform: translateY(-50%);
-            box-shadow: 0 0 10px #ff6b6b;
+            box-shadow: 0 0 1vw #ff8c94;
         }
 
-        .timeline-item:nth-child(odd)::before { right: -10px; }
-        .timeline-item:nth-child(even)::before { left: -10px; }
+        .timeline-item:nth-child(odd)::before { right: -1vw; }
+        .timeline-item:nth-child(even)::before { left: -1vw; }
 
-        /* Galactic Gallery */
         .carousel-item img {
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            border-radius: 2vw;
+            box-shadow: 0 0 3vw rgba(255, 255, 255, 0.5);
             transition: transform 0.5s ease;
+            width: 75%;
         }
 
         .carousel-item.active img {
             transform: scale(1.1);
         }
 
-        /* Contact Section */
         #contact {
             background: linear-gradient(135deg, #1a1a3d 0%, #0d0d1f 100%);
-            padding: 60px 0;
+            padding: 6vh 0;
         }
 
         .contact-form {
             background: rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            padding: 3vw;
+            border-radius: 1.5vw;
+            box-shadow: 0 0 2vw rgba(255, 255, 255, 0.2);
         }
 
         .form-control {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: #fff;
+            border: 0.1vw solid rgba(255, 255, 255, 0.3);
+            color: #e0e0e0;
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
         }
 
         .form-control:focus {
             background: rgba(255, 255, 255, 0.1);
-            border-color: #ff6b6b;
-            box-shadow: 0 0 10px #ff6b6b;
+            border-color: #ff8c94;
+            box-shadow: 0 0 1vw #ff8c94;
         }
 
-        /* Footer */
         footer {
             background: linear-gradient(45deg, #1a1a3d 0%, #4ecdc4 100%);
-            padding: 40px 0;
+            padding: 4vh 0;
             position: relative;
             overflow: hidden;
         }
@@ -387,11 +451,11 @@
 
         .footer-star {
             position: absolute;
-            width: 2px;
-            height: 2px;
+            width: 0.2vw;
+            height: 0.2vw;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 5px #fff;
+            box-shadow: 0 0 0.5vw #fff;
             animation: twinkle 2s infinite;
         }
 
@@ -401,16 +465,84 @@
         }
 
         .social-icons i {
-            font-size: 24px;
+            font-size: clamp(1.5rem, 2.4vw, 2rem);
+            color: #f0f4f8;
             transition: transform 0.3s ease;
         }
 
         .social-icons i:hover {
             transform: scale(1.3);
+            color: #ff8c94;
+        }
+
+        /* Media Queries for Smaller Screens */
+        @media (max-width: 768px) {
+            .friend-card {
+                margin: 1vw 0;
+                padding: 1.5vw;
+            }
+
+            .friend-photo {
+                width: 20vw;
+                height: 20vw;
+            }
+
+            .typing-text {
+                font-size: 4vw;
+            }
+
+            .hero-section {
+                padding: 10vh 0;
+            }
+
+            .planet-tooltip {
+                font-size: 0.8rem;
+                top: -3vw;
+            }
+
+            @keyframes orbit1 { 0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-10vw) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-10vw) rotate(-360deg); } }
+            @keyframes orbit2 { 0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-15vw) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-15vw) rotate(-360deg); } }
+            @keyframes orbit3 { 0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-20vw) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-20vw) rotate(-360deg); } }
+            @keyframes orbit4 { 0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-25vw) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-25vw) rotate(-360deg); } }
+            @keyframes orbit5 { 0% { transform: translate(-50%, -50%) rotate(0deg) translateY(-30vw) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg) translateY(-30vw) rotate(-360deg); } }
+        }
+
+        @media (max-width: 576px) {
+            .navbar-brand, .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .friend-card {
+                width: 80%;
+                margin: 2vw auto;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding: 0 2vw;
+                text-align: center;
+            }
+
+            .timeline-item::before {
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Galactic Loader -->
+    <div id="galactic-loader">
+        <div class="galactic-spiral">
+            <div class="galactic-star" style="animation-delay: 0s;"></div>
+            <div class="galactic-star" style="animation-delay: 0.5s;"></div>
+            <div class="galactic-star" style="animation-delay: 1s;"></div>
+            <div class="galactic-star" style="animation-delay: 1.5s;"></div>
+            <div class="galactic-nebula"></div>
+        </div>
+    </div>
+
     <!-- Cosmic Background -->
     <div class="cosmic-background" id="cosmicBackground"></div>
 
@@ -436,8 +568,8 @@
     <!-- Hero Section -->
     <section id="home" class="hero-section">
         <div class="container position-relative">
-            <h1 class="display-3 fw-bold glow-text typing-text">Six Besties Cosmos</h1>
-            <p class="lead mt-3 glow-text">Click a friend to explore our orbiting universe!</p>
+            <h1 class="display-3 fw-bold typing-text">Six Besties Cosmos</h1>
+            <p class="lead mt-3">Click a friend to explore our orbiting universe!</p>
             <button class="btn btn-outline-light btn-lg mt-4" onclick="createFireworks()">Celebrate Us!</button>
         </div>
     </section>
@@ -445,7 +577,7 @@
     <!-- Squad Section -->
     <section id="squad" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 fw-bold glow-text">The Cosmic Crew</h2>
+            <h2 class="text-center mb-5 fw-bold">The Cosmic Crew</h2>
             <div class="row justify-content-center">
                 <div class="col-md-4 col-lg-2">
                     <div class="friend-card text-center" onclick="showPlanetarySystem('rifat')">
@@ -465,7 +597,7 @@
                 </div>
                 <div class="col-md-4 col-lg-2">
                     <div class="friend-card text-center" onclick="showPlanetarySystem('fattah')">
-                        <img src="Fattah.jpg" class="friend-photo mx-auto" alt="Fattah">
+                        <img src="fattah.jpg" class="friend-photo mx-auto" alt="Fattah">
                         <h4>Fattah</h4>
                         <p><i class="fas fa-laptop-code"></i> Tech Nebula</p>
                         <p class="small text-muted">"Code is my cosmic map."</p>
@@ -502,7 +634,7 @@
     <!-- Cosmic Adventures Section -->
     <section id="adventures" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 fw-bold glow-text">Cosmic Adventures</h2>
+            <h2 class="text-center mb-5 fw-bold">Cosmic Adventures</h2>
             <div class="timeline position-relative">
                 <div class="timeline-item">
                     <div class="timeline-content">
@@ -529,18 +661,18 @@
     <!-- Galactic Gallery Section -->
     <section id="gallery" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 fw-bold glow-text">Galactic Gallery</h2>
+            <h2 class="text-center mb-5 fw-bold">Galactic Gallery</h2>
             <div id="cosmicCarousel" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="nabula.jpg" class="d-block w-75 mx-auto" alt="Nebula">
-                        <div class="carousel-caption glow-text">
+                        <img src="nebula.jpg" class="d-block mx-auto" alt="Nebula">
+                        <div class="carousel-caption">
                             <h5>First Cosmic Meetup</h5>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <img src="stars.jpg" class="d-block w-75 mx-auto" alt="Stars">
-                        <div class="carousel-caption glow-text">
+                        <img src="stars.jpg" class="d-block mx-auto" alt="Stars">
+                        <div class="carousel-caption">
                             <h5>Stargazing Night</h5>
                         </div>
                     </div>
@@ -558,7 +690,7 @@
     <!-- Contact Section -->
     <section id="contact" class="py-5">
         <div class="container">
-            <h2 class="text-center mb-5 fw-bold glow-text">Contact the Cosmos</h2>
+            <h2 class="text-center mb-5 fw-bold">Contact the Cosmos</h2>
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <form class="contact-form">
@@ -581,11 +713,11 @@
     <!-- Planetary System -->
     <div id="planetary-system" onclick="hidePlanetarySystem(event)">
         <img id="sun" class="sun" alt="Sun">
-        <div id="orbit1" class="orbit"></div>
-        <div id="orbit2" class="orbit"></div>
-        <div id="orbit3" class="orbit"></div>
-        <div id="orbit4" class="orbit"></div>
-        <div id="orbit5" class="orbit"></div>
+        <div id="orbit1" class="orbit" style="width: 30vw; height: 30vw; top: calc(50% - 15vw); left: calc(50% - 15vw); max-width: 300px; max-height: 300px;"></div>
+        <div id="orbit2" class="orbit" style="width: 44vw; height: 44vw; top: calc(50% - 22vw); left: calc(50% - 22vw); max-width: 440px; max-height: 440px;"></div>
+        <div id="orbit3" class="orbit" style="width: 58vw; height: 58vw; top: calc(50% - 29vw); left: calc(50% - 29vw); max-width: 580px; max-height: 580px;"></div>
+        <div id="orbit4" class="orbit" style="width: 72vw; height: 72vw; top: calc(50% - 36vw); left: calc(50% - 36vw); max-width: 720px; max-height: 720px;"></div>
+        <div id="orbit5" class="orbit" style="width: 86vw; height: 86vw; top: calc(50% - 43vw); left: calc(50% - 43vw); max-width: 860px; max-height: 860px;"></div>
         <div id="planet1" class="planet"></div>
         <div id="planet2" class="planet"></div>
         <div id="planet3" class="planet"></div>
@@ -596,14 +728,14 @@
     <!-- Footer -->
     <footer class="text-center">
         <div class="container position-relative">
-            <h4 class="glow-text">Six Besties - Stellar Bond</h4>
+            <h4>Six Besties - Stellar Bond</h4>
             <p>Est. 2023 | Friendship Level: Cosmic Eternity</p>
             <div class="social-icons mt-3">
-                <a href="#" class="mx-2"><i class="fab fa-twitter glow-text"></i></a>
-                <a href="#" class="mx-2"><i class="fab fa-instagram glow-text"></i></a>
-                <a href="#" class="mx-2"><i class="fab fa-discord glow-text"></i></a>
+                <a href="#" class="mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="mx-2"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="mx-2"><i class="fab fa-discord"></i></a>
             </div>
-            <div id="cosmic-clock" class="mt-3 glow-text"></div>
+            <div id="cosmic-clock" class="mt-3"></div>
         </div>
     </footer>
 
@@ -612,19 +744,27 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         const friends = {
-            rifat: 'rifat.jpg',
-            ankhi: 'ankhi.jpg',
-            fattah: 'Fattah.jpg',
-            maria: 'maria.jpg',
-            shofiur: 'shofiur.jpg',
-            taiyeba: 'taiyeba.jpg'
+            rifat: { name: 'Rifat', image: 'rifat.jpg', title: 'Cosmic Explorer' },
+            ankhi: { name: 'Ankhi', image: 'ankhi.jpg', title: 'Star Artist' },
+            fattah: { name: 'Fattah', image: 'fattah.jpg', title: 'Tech Nebula' },
+            maria: { name: 'Maria', image: 'maria.jpg', title: 'Peace Galaxy' },
+            shofiur: { name: 'Shofiur', image: 'shofiur.jpg', title: 'Food Constellation' },
+            taiyeba: { name: 'Taiyeba', image: 'taiyeba.jpg', title: 'Solar Smile' }
         };
+
+        // Galactic Loading System
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('galactic-loader');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.body.classList.add('loaded');
+            }, 800);
+        });
 
         // Cosmic Background
         function createCosmicBackground() {
             const bg = document.getElementById('cosmicBackground');
-
-            // Nebulae
             for (let i = 0; i < 3; i++) {
                 const nebula = document.createElement('div');
                 nebula.className = 'nebula';
@@ -633,8 +773,6 @@
                 nebula.style.animationDelay = `${Math.random() * 10}s`;
                 bg.appendChild(nebula);
             }
-
-            // Pulsars
             for (let i = 0; i < 5; i++) {
                 const pulsar = document.createElement('div');
                 pulsar.className = 'pulsar';
@@ -643,8 +781,6 @@
                 pulsar.style.animationDelay = `${Math.random() * 1.5}s`;
                 bg.appendChild(pulsar);
             }
-
-            // Constellations
             const constellationPoints = [];
             for (let i = 0; i < 10; i++) {
                 const star = document.createElement('div');
@@ -656,7 +792,6 @@
                 bg.appendChild(star);
                 constellationPoints.push({ x: x * window.innerWidth / 100, y: y * window.innerHeight / 100 });
             }
-
             for (let i = 0; i < constellationPoints.length - 1; i += 2) {
                 const line = document.createElement('div');
                 line.className = 'constellation-line';
@@ -669,8 +804,6 @@
                 line.style.transform = `rotate(${Math.atan2(dy, dx) * 180 / Math.PI}deg)`;
                 bg.appendChild(line);
             }
-
-            // Shooting Stars
             for (let i = 0; i < 4; i++) {
                 const star = document.createElement('div');
                 star.className = 'shooting-star';
@@ -678,8 +811,6 @@
                 star.style.animationDelay = `${Math.random() * 5}s`;
                 bg.appendChild(star);
             }
-
-            // Footer Stars
             const footer = document.querySelector('footer');
             for (let i = 0; i < 20; i++) {
                 const star = document.createElement('div');
@@ -709,56 +840,45 @@
                 particleCount: 200,
                 spread: 70,
                 origin: { y: 0.6 },
-                colors: ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd700', '#ff9a9e']
+                colors: ['#ff8c94', '#4ecdc4', '#45b7d1', '#ffd700', '#ff9a9e']
             });
         }
 
         // Planetary System
-        function showPlanetarySystem(selectedFriend) {
+        function showPlanetarySystem(selectedFriendKey) {
             const system = document.getElementById('planetary-system');
             const sun = document.getElementById('sun');
             const planets = ['planet1', 'planet2', 'planet3', 'planet4', 'planet5'].map(id => document.getElementById(id));
-            const orbits = ['orbit1', 'orbit2', 'orbit3', 'orbit4', 'orbit5'].map(id => document.getElementById(id));
 
-            // Reset everything
-            planets.forEach(planet => {
-                planet.style.animation = 'none';
-                planet.innerHTML = ''; // Clear tooltips
-                planet.style.backgroundImage = 'none'; // Clear previous background
-                planet.offsetHeight; // Trigger reflow
-            });
-
-            // Set Sun
-            sun.src = friends[selectedFriend];
+            // Set the sun to the clicked friend
+            sun.src = friends[selectedFriendKey].image;
             system.style.display = 'flex';
 
-            // Set Planets
-            const otherFriends = Object.keys(friends).filter(f => f !== selectedFriend);
+            // Filter out the selected friend and get the other five
+            const otherFriends = Object.keys(friends)
+                .filter(key => key !== selectedFriendKey)
+                .map(key => friends[key]);
+
+            // Assign the other five friends to the planets
             planets.forEach((planet, index) => {
-                const friendKey = otherFriends[index];
-                planet.style.backgroundImage = `url(${friends[friendKey]})`;
-                const radius = 180 + index * 70;
-                const speed = 15 - index * 2.5;
+                const friend = otherFriends[index];
+                planet.style.backgroundImage = `url(${friend.image})`;
+                planet.style.top = '50%';
+                planet.style.left = '50%';
+                planet.style.transform = `translate(-50%, -50%)`;
 
-                // Orbit styling
-                orbits[index].style.width = `${radius * 2}px`;
-                orbits[index].style.height = `${radius * 2}px`;
-                orbits[index].style.top = `calc(50% - ${radius}px)`;
-                orbits[index].style.left = `calc(50% - ${radius}px)`;
-
-                // Planet positioning and animation
-                planet.style.setProperty('--radius', `${radius}px`);
-                planet.style.animation = `orbit ${speed}s linear infinite`;
-                planet.style.transform = `translate(-50%, -50%) rotate(${index * 72}deg) translateX(${radius}px) rotate(-${index * 72}deg)`;
+                // Apply orbit animation based on index
+                planet.style.animation = `orbit${index + 1} ${15 - index * 2}s linear infinite`;
 
                 // Add tooltip
+                planet.innerHTML = '';
                 const tooltip = document.createElement('div');
                 tooltip.className = 'planet-tooltip';
-                tooltip.textContent = `${friendKey.charAt(0).toUpperCase() + friendKey.slice(1)} - ${document.querySelector(`[onclick="showPlanetarySystem('${friendKey}')"] p:nth-child(2)`).textContent}`;
+                tooltip.textContent = `${friend.name} - ${friend.title}`;
                 planet.appendChild(tooltip);
             });
 
-            // Play cosmic sound (replace with actual cosmic sound URL)
+            // Play cosmic sound
             const audio = new Audio('https://www.soundjay.com/buttons/beep-01a.mp3');
             audio.play();
         }
@@ -785,18 +905,8 @@
         setInterval(updateCosmicClock, 1000);
         updateCosmicClock();
 
-        // Global Orbit Animation
-        const styleSheet = document.createElement('style');
-        document.head.appendChild(styleSheet);
-        styleSheet.sheet.insertRule(`
-            @keyframes orbit {
-                0% { transform: translate(-50%, -50%) rotate(0deg) translateX(var(--radius)) rotate(0deg); }
-                100% { transform: translate(-50%, -50%) rotate(360deg) translateX(var(--radius)) rotate(-360deg); }
-            }
-        `, 0);
-
-        // Form Submission (Placeholder)
-        document.querySelector('.contact-form')?.addEventListener('submit', (e) => {
+        // Form Submission
+        document.querySelector('.contact-form').addEventListener('submit', (e) => {
             e.preventDefault();
             alert('Message sent to the cosmos!');
         });
